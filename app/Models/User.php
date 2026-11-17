@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Models;
 
@@ -53,3 +53,4 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(ChannelDraft::class, 'author_id');
     }
 }
+

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Filament\Resources\Users;
 
@@ -69,3 +69,4 @@ class UserResource extends Resource
         return ['index' => ManageUsers::route('/')];
     }
 }
+
