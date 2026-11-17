@@ -1,0 +1,89 @@
+﻿services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: repurpose-app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    environment:
+      APP_NAME: "AI Content Repurposing Tool"
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: http://localhost:8080
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: repurpose
+      DB_USERNAME: repurpose
+      DB_PASSWORD: secret
+      MODULE_SOURCE_INGEST: "true"
+      MODULE_MULTI_CHANNEL_DRAFTS: "true"
+      MODULE_CONTENT_CALENDAR: "true"
+      MODULE_SEO_PACKS: "true"
+      MODULE_BRAND_VOICE: "true"
+      MODULE_TRANSCRIPT_CLEANUP: "true"
+      MODULE_ASSET_EXPORT: "true"
+      MODULE_AI_HUB: "true"
+      MODULE_CATALOG_SCRAPE: "false"
+      MODULE_ATTENDANCE_OPS: "false"
+      MODULE_SPEED_OPTIMIZER: "true"
+      MODULE_SLUG_I18N: "true"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - repurpose-net
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: repurpose-nginx
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app
+    networks:
+      - repurpose-net
+
+  mysql:
+    image: mysql:8.4
+    container_name: repurpose-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: repurpose
+      MYSQL_USER: repurpose
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: rootsecret
+    ports:
+      - "3311:3306"
+    volumes:
+      - repurpose_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-prootsecret"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks:
+      - repurpose-net
+
+  redis:
+    image: redis:7-alpine
+    container_name: repurpose-redis
+    restart: unless-stopped
+    ports:
+      - "6383:6379"
+    networks:
+      - repurpose-net
+
+volumes:
+  repurpose_mysql_data:
+
+networks:
+  repurpose-net:
+    driver: bridge
