@@ -24,7 +24,7 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
             'role' => UserRole::Staff,
-            'title' => 'Content Editor',
+            'job_title' => 'Content Editor',
             'organization_name' => 'RepurposeAI',
             'is_active' => true,
             'is_demo' => false,

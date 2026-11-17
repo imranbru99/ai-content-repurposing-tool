@@ -40,7 +40,7 @@ class UserResource extends Resource
             TextInput::make('password')->password()->dehydrated(fn ($state) => filled($state))->required(fn (string $operation) => $operation === 'create'),
             Select::make('role')->options(collect(UserRole::cases())->mapWithKeys(fn (UserRole $r) => [$r->value => $r->label()]))->required(),
             TextInput::make('phone')->tel()->maxLength(40),
-            TextInput::make('title')->maxLength(120),
+            TextInput::make('job_title')->maxLength(120),
             TextInput::make('organization_name')->maxLength(120),
             Toggle::make('is_active')->default(true),
             Toggle::make('is_demo')->default(false),
@@ -54,7 +54,7 @@ class UserResource extends Resource
                 TextColumn::make('name')->searchable()->sortable(),
                 TextColumn::make('email')->searchable(),
                 TextColumn::make('role')->badge()->formatStateUsing(fn ($state) => $state instanceof UserRole ? $state->label() : $state),
-                TextColumn::make('title')->toggleable(),
+                TextColumn::make('job_title')->toggleable(),
                 IconColumn::make('is_active')->boolean(),
             ])
             ->filters([

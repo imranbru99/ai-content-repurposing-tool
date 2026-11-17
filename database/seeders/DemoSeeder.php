@@ -20,12 +20,12 @@ class DemoSeeder extends Seeder
         app(ModuleManager::class)->syncFromConfig();
 
         $users = [
-            ['name' => 'Super Admin', 'email' => 'superadmin@repurposeai.test', 'role' => UserRole::SuperAdmin, 'title' => 'Platform Owner'],
-            ['name' => 'Content Admin', 'email' => 'admin@repurposeai.test', 'role' => UserRole::Admin, 'title' => 'Head of Content'],
-            ['name' => 'Editorial Manager', 'email' => 'manager@repurposeai.test', 'role' => UserRole::Manager, 'title' => 'Editorial Manager'],
-            ['name' => 'Staff Editor', 'email' => 'staff@repurposeai.test', 'role' => UserRole::Staff, 'title' => 'Content Editor'],
-            ['name' => 'Agency Client', 'email' => 'client@repurposeai.test', 'role' => UserRole::Client, 'title' => 'Marketing Lead'],
-            ['name' => 'Demo User', 'email' => 'demo@repurposeai.test', 'role' => UserRole::Demo, 'title' => 'Demo Editor'],
+            ['name' => 'Super Admin', 'email' => 'superadmin@repurposeai.test', 'role' => UserRole::SuperAdmin, 'job_title' => 'Platform Owner'],
+            ['name' => 'Content Admin', 'email' => 'admin@repurposeai.test', 'role' => UserRole::Admin, 'job_title' => 'Head of Content'],
+            ['name' => 'Editorial Manager', 'email' => 'manager@repurposeai.test', 'role' => UserRole::Manager, 'job_title' => 'Editorial Manager'],
+            ['name' => 'Staff Editor', 'email' => 'staff@repurposeai.test', 'role' => UserRole::Staff, 'job_title' => 'Content Editor'],
+            ['name' => 'Agency Client', 'email' => 'client@repurposeai.test', 'role' => UserRole::Client, 'job_title' => 'Marketing Lead'],
+            ['name' => 'Demo User', 'email' => 'demo@repurposeai.test', 'role' => UserRole::Demo, 'job_title' => 'Demo Editor'],
         ];
 
         $created = [];
@@ -37,7 +37,7 @@ class DemoSeeder extends Seeder
                     'password' => Hash::make('password'),
                     'role' => $data['role'],
                     'phone' => '+1-555-0199',
-                    'title' => $data['title'],
+                    'job_title' => $data['job_title'],
                     'organization_name' => 'RepurposeAI Studio',
                     'is_demo' => $data['role'] === UserRole::Demo,
                     'is_active' => true,
